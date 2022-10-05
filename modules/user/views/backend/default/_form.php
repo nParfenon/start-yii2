@@ -25,21 +25,9 @@ $useRole = ArrayHelper::map($auth->getRolesByUser($model->id),'name','name');*/
 
             <?= $form->field($model, 'phone')->textInput() ?>
 
-            <div class="row">
+            <?= $form->field($model, 'password')->textInput(['readonly' => !$model->isNewRecord]) ?>
 
-                <div class="col-lg-10 col-md-12">
-
-                    <?= $form->field($model, 'password')->passwordInput() ?>
-
-                </div>
-
-                <div class="col-lg-2 col-md-12">
-
-                    <?= $form->field($model, 'updatePassword')->dropDownList([0 => 'Нет', 1 => 'Да'],['disabled'=> $model->isNewRecord]) ?>
-
-                </div>
-
-            </div>
+            <?= $form->field($model, 'newPassword')->textInput(['readonly' => $model->isNewRecord]) ?>
 
             <?= $form->field($model, 'isAdmin')->checkbox() ?>
 

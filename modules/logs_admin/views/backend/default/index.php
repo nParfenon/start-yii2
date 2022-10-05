@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'user_id',
                         'format' => 'text',
                         'value' => function ($model) {
-                            return Html::encode($model->user->username);
+                            return Html::encode($model->user->username ?? $model->user_id);
                         },
                     ],
                     'place',
@@ -36,9 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'action',
                         'format' => 'text',
                         'value' => function ($model) {
-                            return Html::encode($model::$actions[$model->action]);
+                            return Html::encode($model::_ACTIONS[$model->action]);
                         },
-                        'filter' => LogsAdmin::$actions
+                        'filter' => LogsAdmin::_ACTIONS
                     ],
                     [
                         'attribute' => 'created_at',

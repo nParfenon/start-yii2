@@ -23,13 +23,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'user_id',
                         'format' => 'text',
-                        'value' => Html::encode($model->user->username),
+                        'value' => Html::encode($model->user->username ?? $model->user_id),
                     ],
                     'place',
                     [
                         'attribute' => 'action',
                         'format' => 'text',
-                        'value' => Html::encode($model::$actions[$model->action]),
+                        'value' => Html::encode($model::_ACTIONS[$model->action]),
                     ],
                     [
                         'attribute' => 'details',

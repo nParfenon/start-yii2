@@ -26,7 +26,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     const SUPER_ADMIN_ID = 1;
     const SUPER_ADMIN = 'admin';
 
-    public $updatePassword;
+    public $newPassword;
 
     /**
      * {@inheritdoc}
@@ -57,6 +57,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     {
         $array = [
             [['username', 'password'], 'required', 'message' => 'Заполните поле'],
+            ['newPassword', 'string'],
             ['username', 'string' ,'max' => 30],
             ['email', 'string' ,'max' => 255],
             ['phone', 'string' ,'max' => 40],
@@ -67,7 +68,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
             ['email', 'email', 'message' => 'Не верно введен "{attribute}"'],
             ['email', 'unique', 'targetClass' => self::class, 'targetAttribute' => 'email', 'message' => 'Такой "{attribute}" уже зарегестрирован'],
 
-            [['isAdmin','updatePassword'],'boolean'],
+            [['isAdmin'],'boolean'],
 
             ['phone', 'unique', 'targetClass' => self::class, 'message' => 'Такой "{attribute}" уже зарегестрирован'],
         ];
@@ -103,7 +104,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
             'password_reset_token' => 'Токен сброса пароля',
             'authKey' => 'Ключ аутентификации',
             'isAdmin' => 'Админ',
-            'updatePassword' => 'Обновить пароль?'
+            'newPassword' => 'Новый пароль'
         ] ;
 
         return array_merge(parent::attributeLabels(), $array);

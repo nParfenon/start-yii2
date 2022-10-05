@@ -111,7 +111,9 @@ class DefaultController extends Controller
 
         if ($this->request->isPost && $model->load($this->request->post())) {
 
-            $model->password = $model->updatePassword ? $model->setPassword($model->password) : $model->oldAttributes['password'];
+            if ($model->newPassword){
+                $model->password = $model->setPassword($model->newPassword);
+            }
 
             if ($model->save()){
 

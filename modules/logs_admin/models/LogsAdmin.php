@@ -25,7 +25,7 @@ class LogsAdmin extends CustomModel
     const _UPDATE = 2;
     const _DELETE = 3;
 
-    public static $actions = [
+    const _ACTIONS = [
         self::_CREATE => 'Создание',
         self::_UPDATE => 'Обновление',
         self::_DELETE => 'Удаление',
@@ -136,7 +136,7 @@ class LogsAdmin extends CustomModel
     private function tryLog(string $place, int $action, string $details) : bool
     {
         $model = new self();
-        $model->user_id = Yii::$app->user->id;
+        $model->user_id = Yii::$app->user->id ?? 0;
         $model->place = $place;
         $model->action = $action;
         $model->details = $details;

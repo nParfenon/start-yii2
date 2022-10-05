@@ -32,6 +32,7 @@ tests/_support/_generated
 #vagrant folder
 /.vagrant
 
-web/log
+/web/log/
+/web/phpmyadmin/
 
 .env
