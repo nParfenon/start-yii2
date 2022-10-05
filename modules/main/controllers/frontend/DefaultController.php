@@ -28,6 +28,8 @@ class DefaultController extends FrontendController
 
     public function actionMaintenance()
     {
+        $this->layout = false;
+
         return $this->render('maintenance');
     }
 
