@@ -56,7 +56,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     public function rules()
     {
         $array = [
-            [['username', 'password'], 'required', 'message' => 'Заполните поле'],
+            [['username', 'email', 'password'], 'required', 'message' => 'Заполните поле'],
             ['newPassword', 'string'],
             ['username', 'string' ,'max' => 30],
             ['email', 'string' ,'max' => 255],

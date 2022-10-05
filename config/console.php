@@ -1,5 +1,9 @@
 <?php
 
+require __DIR__ . '/../vendor/autoload.php';
+
+Dotenv\Dotenv::createImmutable(__DIR__ . '/../')->load();
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 

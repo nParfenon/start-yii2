@@ -1,10 +1,8 @@
 <?php
+
 require __DIR__ . '/../vendor/autoload.php';
 
-// для предотвращения скачивания .env файла выносим его за пределы DOCUMENT_ROOT (/web/), т.е. в корень проекта
-// если есть возможность, так же добавить запрет на доступ к .env файлу в конфиге веб сервера
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
+Dotenv\Dotenv::createImmutable(__DIR__ . '/../')->load();
 
 // comment out the following two lines when deployed to production
 defined('YII_DEBUG') or define('YII_DEBUG', (bool)$_ENV['YII_DEBUG']);
