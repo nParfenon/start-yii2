@@ -4,8 +4,6 @@ namespace app\modules\admin;
 
 use Yii;
 use yii\filters\AccessControl;
-use app\modules\user\models\User;
-
 /**
  * admin module definition class
  */
@@ -21,7 +19,7 @@ class Module extends \yii\base\Module
         // custom initialization code goes here
     }
 
-    /*public function behaviors(){
+    public function behaviors(){
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -29,14 +27,14 @@ class Module extends \yii\base\Module
                     [
                         'allow' => true,
                         'roles' => ['@'],
-                        'matchCallback' => function($rule,$action){
-                            return Yii::$app->user->getId() === User::SUPER_ADMIN_ID;
+                        'matchCallback' => function($rule, $action){
+                            return Yii::$app->user->identity->isAdmin;
                         },
                     ],
                 ],
 
             ],
         ];
-    }*/
+    }
 
 }

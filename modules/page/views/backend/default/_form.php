@@ -23,9 +23,9 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'name')->textInput() ?>
 
-                <?= $form->field($model, 'urn')->textInput() ?>
+                <?= $form->field($model, 'urn')->textInput(['placeholder' => '/address']) ?>
 
-                <?= $form->field($model, 'redirect')->textInput() ?>
+                <?= $form->field($model, 'redirect')->textInput(['placeholder' => '/redirect']) ?>
 
                 <?= $form->field($model, 'active')->checkbox() ?>
 
