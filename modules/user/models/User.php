@@ -31,7 +31,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function ignoreAttributeLog()
+    public function ignoreAttributeLog() : array
     {
         $array = [
             'password_reset_token',

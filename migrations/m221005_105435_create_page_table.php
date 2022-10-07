@@ -20,7 +20,7 @@ class m221005_105435_create_page_table extends Migration
             'redirect' => $this->string(50),
             'meta_title' => $this->string(60),
             'meta_description' => $this->string(150),
-            'meta_image' => $this->string(255),
+            'meta_image' => $this->integer()->unsigned(),
             'active' => $this->tinyInteger(1)->unsigned(),
             'created_at' => $this->dateTime(),
             'updated_at' => $this->dateTime(),

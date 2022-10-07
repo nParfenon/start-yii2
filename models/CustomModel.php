@@ -16,7 +16,7 @@ class CustomModel extends ActiveRecord
      * Возвращает поля, которые не будут записаны в логи
      * @return array ignored attribute
      */
-    public function ignoreAttributeLog()
+    public function ignoreAttributeLog() : array
     {
         return [
             'created_at',

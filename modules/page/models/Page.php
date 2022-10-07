@@ -41,7 +41,6 @@ class Page extends CustomModel
             [['name','urn'],'required'],
 
             [['name','urn','redirect'], 'string', 'max' => 50],
-            ['meta_image', 'string' ,'max' => 255],
             ['meta_title', 'string' ,'max' => 60],
             ['meta_description', 'string' ,'max' => 150],
 
@@ -50,6 +49,8 @@ class Page extends CustomModel
             ['urn', 'unique', 'targetClass' => self::class, 'message' => 'Такой "{attribute}" уже зарегестрирован'],
 
             [['name','urn','redirect','meta_title','meta_description'], 'trim'],
+
+            [['meta_image'],'safe']
         ];
 
         return array_merge(parent::rules(), $array);
