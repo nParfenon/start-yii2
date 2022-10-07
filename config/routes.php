@@ -3,6 +3,7 @@
 return [
     /*main*/
     '/' => 'main/default/index',
+    'error' => 'main/default/error',
     'maintenance' => 'main/default/maintenance',
 
     /*user*/

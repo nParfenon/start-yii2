@@ -32,7 +32,7 @@ $config = [
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
-            'errorAction' => 'main/default/error',
+            'errorAction' => $routes['error'],
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -42,7 +42,7 @@ $config = [
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.yandex.ru',
-                'username' => 'start.yii2.nparfenon@yandex.ru',
+                'username' => $_ENV['MAILER_USERNAME'],
                 'password' => $_ENV['MAILER_PASSWORD'],
                 'port' => '465',
                 'encryption' => 'ssl',
@@ -96,13 +96,13 @@ $config = [
                         ]
                     ],*/
                     //Allowed user names
-                    /*[
-                        'class' => 'brussens\maintenance\filters\UserFilter',
+                    [
+                        'class' => 'app\models\MaintenanceCustomUserFilter', //Кастомная модель, т.к. была ошибка
                         'checkedAttribute' => 'username',
                         'users' => [
                             'admin',
                         ],
-                    ]*/
+                    ]
                 ],
 
             ],

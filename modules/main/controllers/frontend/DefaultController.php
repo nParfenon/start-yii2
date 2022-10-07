@@ -3,6 +3,8 @@
 namespace app\modules\main\controllers\frontend;
 
 use app\controllers\FrontendController;
+use brussens\maintenance\states\FileState;
+use yii\web\NotFoundHttpException;
 
 class DefaultController extends FrontendController
 {
@@ -28,6 +30,8 @@ class DefaultController extends FrontendController
 
     public function actionMaintenance()
     {
+        if (!(new FileState())->isEnabled()) throw new NotFoundHttpException('Страница не найдена.');
+
         $this->layout = false;
 
         return $this->render('maintenance');
