@@ -64,10 +64,6 @@ $config = [
             'showScriptName' => false,
             'rules' => $routes,
         ],
-
-        'exceptionMessage' => [
-            'class' => 'app\components\ExceptionMessage',
-        ],
     ],
     'modules' => $modules,
     'params' => $params,
