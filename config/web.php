@@ -72,6 +72,7 @@ $config = [
             'brussens\maintenance\Maintenance' => [
                 'class' => 'brussens\maintenance\Maintenance',
                 'route' => $routes['maintenance'],
+                'statusCode' => 503,
                 'filters' => [
                     //Allowed routes filter. Your can allow debug panel routes.
                     [
