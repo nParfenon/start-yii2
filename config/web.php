@@ -41,11 +41,11 @@ $config = [
             'textLayout' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.yandex.ru',
+                'host' => $_ENV['MAILER_HOST'],
                 'username' => $_ENV['MAILER_USERNAME'],
                 'password' => $_ENV['MAILER_PASSWORD'],
-                'port' => '465',
-                'encryption' => 'ssl',
+                'port' => $_ENV['MAILER_PORT'],
+                'encryption' => $_ENV['MAILER_ENCRYPTION'],
             ],
         ],
         'log' => [
