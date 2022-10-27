@@ -19,12 +19,24 @@ class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web/build';
-    public $css = [
-    ];
-    public $js = [
-    ];
+
+    public $css = [];
+    public $js = [];
     public $depends = [
         //'yii\web\YiiAsset',
         //'yii\bootstrap4\BootstrapAsset',
     ];
+
+    public function init()
+    {
+        $this->css[] = $this->glob('css');
+        $this->js[] = $this->glob('js');
+    }
+
+    private function glob($ext)
+    {
+        foreach (glob("build/bundle*.$ext") as $filename) {
+            return basename($filename);
+        }
+    }
 }
