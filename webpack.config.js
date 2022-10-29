@@ -11,6 +11,8 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const PostcssPresetEnv = require("postcss-preset-env");
 const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin");
 
+const filename = (name, ext, contenthash = true) => (isDevelopment || !contenthash) ? `${name}.${ext}` : `${name}.[contenthash].${ext}`;
+
 const PATHS = {
     entry: {
         main: 'web/src',
@@ -37,7 +39,7 @@ module.exports = {
     ],
     output: {
         path: path.resolve(__dirname, PATHS.output.main),
-        filename: 'bundle[contenthash].js',
+        filename: filename('bundle', 'js'),
         clean: true,
     },
     optimization: {
@@ -48,7 +50,7 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'bundle[contenthash].css'
+            filename: filename('bundle', 'css'),
         }),
         new ImageminWebpWebpackPlugin([
             {
