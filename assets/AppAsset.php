@@ -17,8 +17,10 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
+    const buildFolder = 'build';
+
     public $basePath = '@webroot';
-    public $baseUrl = '@web/build';
+    public $baseUrl = '@web/'.self::buildFolder;
 
     public $css = [];
     public $js = [];
@@ -35,8 +37,6 @@ class AppAsset extends AssetBundle
 
     private function glob($ext)
     {
-        foreach (glob("build/bundle*.$ext") as $filename) {
-            return basename($filename);
-        }
+        return basename(glob(self::buildFolder."/*.$ext")[0]);
     }
 }
