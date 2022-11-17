@@ -136,7 +136,7 @@ class LogsAdmin extends CustomModel
     private function tryLog(string $place, int $action, string $details) : bool
     {
         $model = new self();
-        $model->user_id = Yii::$app->user->id ?? 0;
+        $model->user_id = Yii::$app->user->id;
         $model->place = $place;
         $model->action = $action;
         $model->details = $details;
