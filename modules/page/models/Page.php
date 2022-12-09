@@ -80,10 +80,10 @@ class Page extends CustomModel
      */
     public function beforeSave($insert)
     {
-        if ($this->id === self::MAIN_PAGE_ID || $this->urn === self::MAIN_PAGE){
-            if ($this->urn !== self::MAIN_PAGE){
-                return false;
-            }
+        if ($this->id === self::MAIN_PAGE_ID || $this->urn === self::MAIN_PAGE) {
+
+            if ($this->urn !== self::MAIN_PAGE) return false;
+
         }
 
         return parent::beforeSave($insert);
@@ -94,9 +94,7 @@ class Page extends CustomModel
      */
     public function beforeDelete()
     {
-        if ($this->id === self::MAIN_PAGE_ID || $this->urn === self::MAIN_PAGE){
-            return false;
-        }
+        if ($this->id === self::MAIN_PAGE_ID || $this->urn === self::MAIN_PAGE) return false;
 
         return parent::beforeDelete();
     }

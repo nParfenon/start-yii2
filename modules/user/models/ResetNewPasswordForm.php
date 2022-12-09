@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\modules\user\models;
 
 use Yii;
@@ -25,13 +24,14 @@ class ResetNewPasswordForm extends Model
         ];
     }
 
-    public function tryNewPassword($token)
+    public function setNewPassword($token): bool
     {
         if ($this->validate()) {
 
-            $user = User::findByPasswordResetToken($token);
+            $user = User::findByPasswordToken($token);
             $user->password = $user->setPassword($this->password);
-            $user->password_reset_token = null;
+            $user->password_reset_token = NULL;
+
             if ($user->save()) return true;
 
         }

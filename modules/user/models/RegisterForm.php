@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\modules\user\models;
 
 use Yii;
@@ -8,8 +7,8 @@ use yii\base\Model;
 
 class RegisterForm extends Model
 {
+
     public $username;
-    public $phone;
     public $email;
     public $password;
     public $passwordRepeat;
@@ -29,8 +28,6 @@ class RegisterForm extends Model
             ['email', 'email', 'message' => 'Не верно введен "{attribute}"'],
             ['email', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'email', 'message' => 'Такой "{attribute}" уже зарегестрирован'],
 
-            ['phone', 'string'],
-            ['phone', 'unique', 'targetClass' => User::class, 'message' => 'Такой "{attribute}" уже зарегестрирован'],
         ];
 
         return array_merge(User::rulesPassword(), $array);
@@ -40,7 +37,6 @@ class RegisterForm extends Model
     {
         return [
             'username' => 'Логин',
-            'phone' => 'Телефон',
             'email' => 'Email',
             'password' => 'Пароль',
             'passwordRepeat' => 'Повторите пароль'
@@ -50,14 +46,14 @@ class RegisterForm extends Model
     public function tryRegister()
     {
         if ($this->validate()) {
+
             $user = new User();
             $user->username = $this->username;
-            $user->phone = $this->phone;
             $user->email = $this->email;
             $user->password = $user->setPassword($this->password);
-            if ($user->save()) {
-                return $user;
-            }
+
+            if ($user->save()) return $user;
+
         }
 
         return false;

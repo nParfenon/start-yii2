@@ -46,6 +46,4 @@ class buttons extends Widget
         return $this->btn;
     }
 
-
-
 }

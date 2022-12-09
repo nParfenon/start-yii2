@@ -20,11 +20,7 @@ class DefaultController extends Controller
 
                 if (array_key_exists($item,$model)){
 
-                    if (Settings::updateAll($value,"field = '$item'")){
-
-                        $model[$item] =  array_merge($model[$item], $post[$item]);
-
-                    }
+                    if (Settings::updateAll($value,"field = '$item'")) $model[$item] =  array_merge($model[$item], $post[$item]);
 
                 }
 

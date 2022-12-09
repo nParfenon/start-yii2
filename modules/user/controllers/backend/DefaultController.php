@@ -46,6 +46,7 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         $searchModel = new UserSearch();
+
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -77,18 +78,21 @@ class DefaultController extends Controller
         $model = new User();
 
         if ($this->request->isPost) {
+
             if ($model->load($this->request->post())) {
 
                 $model->password = $model->setPassword($model->password);
 
-                if ($model->save()){
+                if ($model->save()) {
 
                     $model->trigger($model::EVENT_SAVE_LOG);
 
                     return $this->redirect(['view', 'id' => $model->id]);
+
                 }
 
             }
+
         } else {
             $model->loadDefaultValues();
         }
@@ -111,15 +115,14 @@ class DefaultController extends Controller
 
         if ($this->request->isPost && $model->load($this->request->post())) {
 
-            if ($model->newPassword){
-                $model->password = $model->setPassword($model->newPassword);
-            }
+            if ($model->newPassword) $model->password = $model->setPassword($model->newPassword);
 
-            if ($model->save()){
+            if ($model->save()) {
 
                 $model->trigger($model::EVENT_SAVE_LOG);
 
                 return $this->redirect(['view', 'id' => $model->id]);
+
             }
 
         }
@@ -156,9 +159,7 @@ class DefaultController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
+        if (($model = User::findOne(['id' => $id])) !== null) return $model;
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }

@@ -9,7 +9,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-login">
 
     <?php $form = ActiveForm::begin([
-        'id' => 'register-form',
         'action' => '/try-register',
     ]); ?>
 

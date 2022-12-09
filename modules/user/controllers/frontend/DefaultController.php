@@ -5,6 +5,7 @@ namespace app\modules\user\controllers\frontend;
 use Yii;
 use app\controllers\FrontendController;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use app\modules\user\models\User;
 use app\modules\user\models\LoginForm;
@@ -39,7 +40,7 @@ class DefaultController extends FrontendController
 
     public function actionLogin()
     {
-        $this->checkPage();
+        //$this->checkPage();
 
         $model = new LoginForm();
 
@@ -61,7 +62,7 @@ class DefaultController extends FrontendController
 
     public function actionResetPassword()
     {
-        $this->checkPage();
+        //$this->checkPage();
 
         $model = new ResetPasswordForm();
 
@@ -70,13 +71,15 @@ class DefaultController extends FrontendController
         ]);
     }
 
-    public function actionResetNewPassword($token = false)
+    public function actionSetNewPassword($token)
     {
-        if (!$token || !User::findByPasswordResetToken($token)) throw new NotFoundHttpException();
+        //$this->checkPage();
+
+        if (!$user = User::findByPasswordToken($token)) throw new NotFoundHttpException('Ссылка не действительна или ее время истекло.');
 
         $model = new ResetNewPasswordForm();
 
-        return $this->render('reset-new-password',[
+        return $this->render('set-new-password',[
             'model' => $model
         ]);
     }
@@ -98,9 +101,9 @@ class DefaultController extends FrontendController
 
                 if($model->tryLogin()) return $this->goHome();
 
-                Yii::$app->session->setFlash('error', implode($model->firstErrors));
+                Yii::$app->session->setFlash('login_message', implode($model->firstErrors));
 
-                return $this->redirect('/login');
+                return $this->redirect(['/login']);
 
             }
 
@@ -142,7 +145,7 @@ class DefaultController extends FrontendController
 
             if ($model->load(Yii::$app->request->post())) {
 
-                $token = $model->tryToken();
+                $token = $model->setPasswordToken();
 
                 if ($token) {
 
@@ -150,32 +153,27 @@ class DefaultController extends FrontendController
                     $mailer->setFrom(Yii::$app->params['senderEmail']);
                     $mailer->setTo($model->email);
 
-                    if ($mailer->send()) {
+                    if ($mailer->send()) $message = 'Ссылка для восстановления пароля отправлена на Вашу почту';
 
-                        Yii::$app->session->setFlash('mailer_message', 'Ссылка для восстановления пароля отправлена на Вашу почту');
-
-                    } else {
-
-                        Yii::$app->session->setFlash('mailer_message', 'Мы не смогли отправить ссылку для восстановления пароля. Попробуйте позже.');
-
-                    }
+                    else $message = 'Мы не смогли отправить ссылку для восстановления пароля. Попробуйте позже.';
 
                 }else {
 
-                    Yii::$app->session->setFlash('mailer_message', implode($model->firstErrors));
+                    $message = implode($model->firstErrors);
 
                 }
 
-                return $this->redirect('/reset-password');
+                Yii::$app->session->setFlash('reset_password_message', $message);
 
+                return $this->redirect(['/reset-password']);
             }
 
         }
 
-        throw new NotFoundHttpException(Yii::$app->exceptionMessage->call("404"));
+        throw new NotFoundHttpException();
     }
 
-    public function actionTryResetNewPassword($token)
+    public function actionTrySetNewPassword($token)
     {
         if (Yii::$app->request->isPost) {
 
@@ -183,12 +181,14 @@ class DefaultController extends FrontendController
 
             if ($model->load(Yii::$app->request->post())) {
 
-                $newPassword = $model->tryNewPassword($token);
+                $newPassword = $model->setNewPassword($token);
 
                 if (!$newPassword) {
-                    Yii::$app->session->setFlash('reset_new_password_message', implode($model->firstErrors));
 
-                    return $this->redirect('/reset-new-password?token='.$token);
+                    Yii::$app->session->setFlash('set_new_password_message', implode($model->firstErrors));
+
+                    return $this->redirect(['/set-new-password', 'token' => $token]);
+
                 }
 
                 return $this->goHome();
@@ -196,7 +196,7 @@ class DefaultController extends FrontendController
 
         }
 
-        throw new NotFoundHttpException(Yii::$app->exceptionMessage->call("404"));
+        throw new NotFoundHttpException();
     }
 
 }

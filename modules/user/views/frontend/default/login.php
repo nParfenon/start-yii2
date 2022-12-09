@@ -9,7 +9,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-login">
 
     <?php $form = ActiveForm::begin([
-        'id' => 'login-form',
         'action' => '/try-login',
     ]); ?>
 
@@ -19,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
-    <?= Yii::$app->session->getFlash('error') ?>
+    <?= Yii::$app->session->getFlash('login_message') ?>
 
     <?= Html::submitButton('Login') ?>
 

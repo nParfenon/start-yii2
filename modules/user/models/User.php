@@ -12,7 +12,6 @@ use yii\helpers\ArrayHelper;
  * @property int $id
  * @property string $username
  * @property string $email
- * @property string|null $phone
  * @property string $password
  * @property string|null $password_reset_token
  * @property string|null $authKey
@@ -23,15 +22,18 @@ use yii\helpers\ArrayHelper;
 class User extends CustomModel implements \yii\web\IdentityInterface
 {
 
-    const SUPER_ADMIN_ID = 1;
-    const SUPER_ADMIN = 'admin';
+    const _SUPER_ADMIN_ID = 1;
+    const _SUPER_ADMIN = 'admin';
+
+    private const _PREFIX = '_it'; /* Разделитель для токена*/
+    private const _TIME = 60 * 30; /* Время действия токена*/
 
     public $newPassword;
 
     /**
      * {@inheritdoc}
      */
-    public function ignoreAttributeLog() : array
+    public function ignoreAttributeLog(): array
     {
         $array = [
             'password_reset_token',
@@ -60,7 +62,6 @@ class User extends CustomModel implements \yii\web\IdentityInterface
             ['newPassword', 'string'],
             ['username', 'string' ,'max' => 30],
             ['email', 'string' ,'max' => 255],
-            ['phone', 'string' ,'max' => 40],
 
             ['username', 'unique', 'targetClass' => self::class, 'message' => 'Такой "{attribute}" уже зарегестрирован'],
 
@@ -69,8 +70,6 @@ class User extends CustomModel implements \yii\web\IdentityInterface
             ['email', 'unique', 'targetClass' => self::class, 'targetAttribute' => 'email', 'message' => 'Такой "{attribute}" уже зарегестрирован'],
 
             [['isAdmin'],'boolean'],
-
-            ['phone', 'unique', 'targetClass' => self::class, 'message' => 'Такой "{attribute}" уже зарегестрирован'],
         ];
 
         return array_merge(parent::rules(), $array);
@@ -97,7 +96,6 @@ class User extends CustomModel implements \yii\web\IdentityInterface
         $array = [
             'id' => 'ID',
             'username' => 'Логин',
-            'phone' => 'Телефон',
             'email' => 'Email',
             'role' => 'Роль',
             'password' => 'Пароль',
@@ -115,10 +113,10 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      */
     public function beforeSave($insert)
     {
-        if ($this->id === self::SUPER_ADMIN_ID || $this->username === self::SUPER_ADMIN){
-            if ($this->username !== self::SUPER_ADMIN || $this->isAdmin == false){
-                return false;
-            }
+        if ($this->id === self::_SUPER_ADMIN_ID || $this->username === self::_SUPER_ADMIN){
+
+            if ($this->username !== self::_SUPER_ADMIN || $this->isAdmin == false) return false;
+
         }
 
         return parent::beforeSave($insert);
@@ -129,9 +127,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      */
     public function beforeDelete()
     {
-        if ($this->id === self::SUPER_ADMIN_ID || $this->username === self::SUPER_ADMIN){
-            return false;
-        }
+        if ($this->id === self::_SUPER_ADMIN_ID || $this->username === self::_SUPER_ADMIN) return false;
 
         return parent::beforeDelete();
     }
@@ -163,14 +159,15 @@ class User extends CustomModel implements \yii\web\IdentityInterface
         return static::findOne(['username' => $username]);
     }
 
+    /**
+     * Finds user by email
+     *
+     * @param string $email
+     * @return static|null
+     */
     public static function findByEmail($email)
     {
         return static::findOne(['email' => $email]);
-    }
-
-    public static function findByPasswordResetToken($token)
-    {
-        return static::findOne(['password_reset_token' => $token]);
     }
 
     /**
@@ -179,6 +176,14 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Генерирует авторизационный ключ
+     */
+    public function generateAuthKey()
+    {
+        $this->authKey = Yii::$app->security->generateRandomString();
     }
 
     /**
@@ -208,13 +213,44 @@ class User extends CustomModel implements \yii\web\IdentityInterface
         return  Yii::$app->security->validatePassword($password,$this->password);
     }
 
+    /**
+     * Генерирует пароль
+     */
     public function setPassword($password)
     {
         return Yii::$app->security->generatePasswordHash($password);
     }
 
-    public function generateAuthKey()
+    /**
+     * Генерирует токен для сброса пароля
+     */
+    public static function generatePasswordToken(int $id): string
     {
-        $this->authKey = Yii::$app->security->generateRandomString();
+        return Yii::$app->security->generateRandomString() . self::_PREFIX . $id . self::_PREFIX  . time() + self::_TIME;
+    }
+
+    /**
+     * Осуществляет поиск по токену
+     */
+    public static function findByPasswordToken(string $token)
+    {
+        $exp = explode(self::_PREFIX, $token);
+
+        if (count($exp) != 3) return false;
+
+        $time = array_pop($exp);
+        $id = array_pop($exp);
+
+        if ( !is_numeric($time) || !is_numeric($id) || !$user = User::find()->where(['id' => $id])->andWhere(['= BINARY', 'password_reset_token', $token])->one() ) return false;
+
+        if ($time < time()) {
+
+            $user->password_reset_token = NULL;
+            $user->save();
+
+            return false;
+        }
+
+        return $user;
     }
 }

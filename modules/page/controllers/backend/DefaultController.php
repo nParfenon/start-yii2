@@ -39,6 +39,7 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         $searchModel = new PageSearch();
+
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -69,15 +70,16 @@ class DefaultController extends Controller
     {
         $model = new Page();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
 
-                $model->trigger($model::EVENT_SAVE_LOG);
+            $model->trigger($model::EVENT_SAVE_LOG);
 
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+            return $this->redirect(['view', 'id' => $model->id]);
+
         } else {
+
             $model->loadDefaultValues();
+
         }
 
         return $this->render('create', [
@@ -101,6 +103,7 @@ class DefaultController extends Controller
             $model->trigger($model::EVENT_SAVE_LOG);
 
             return $this->redirect(['view', 'id' => $model->id]);
+
         }
 
         return $this->render('update', [
@@ -135,9 +138,7 @@ class DefaultController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Page::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
+        if (($model = Page::findOne(['id' => $id])) !== null) return $model;
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }

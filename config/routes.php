@@ -10,10 +10,10 @@ return [
     'login' => 'user/default/login',
     'register' => 'user/default/register',
     'reset-password' => 'user/default/reset-password',
-    'reset-new-password' => 'user/default/reset-new-password',
+    'set-new-password' => 'user/default/set-new-password',
     'logout' => 'user/default/logout',
     'try-login' => 'user/default/try-login',
     'try-register' => 'user/default/try-register',
     'try-reset-password' => 'user/default/try-reset-password',
-    'try-reset-new-password' => 'user/default/try-reset-new-password'
+    'try-set-new-password' => 'user/default/try-set-new-password'
 ];

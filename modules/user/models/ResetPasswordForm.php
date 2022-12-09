@@ -30,13 +30,16 @@ class ResetPasswordForm extends Model
         ];
     }
 
-    public function tryToken()
+    public function setPasswordToken()
     {
         if ($this->validate()) {
 
             $user = User::findByEmail($this->email);
-            $token = Yii::$app->security->generateRandomString().$user->id;
+
+            $token = User::generatePasswordToken($user->id);
+
             $user->password_reset_token = $token;
+
             if ($user->save()) return $token;
 
         }

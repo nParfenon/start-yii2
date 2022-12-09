@@ -78,7 +78,7 @@ class LogsAdmin extends CustomModel
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
-    public function saveLog(object $event) : bool
+    public function saveLog(object $event): bool
     {
         $_this = $event->data['this'];
 
@@ -98,9 +98,8 @@ class LogsAdmin extends CustomModel
 
                 $oldAttributes = $this->sortField($ignoreAttributeLog, $event->data['changedAttributes']);
 
-                if (!$oldAttributes){
-                    return true;
-                }
+                if (!$oldAttributes) return true;
+
 
                 $details['id'] = $attributes['id'];
 
@@ -112,9 +111,7 @@ class LogsAdmin extends CustomModel
 
                 }
 
-                if (count($details) <= 1){
-                    return true;
-                }
+                if (count($details) <= 1) return true;
 
                 $action = self::_UPDATE;
             }
@@ -133,7 +130,7 @@ class LogsAdmin extends CustomModel
         return $this->tryLog($place, $action, $details);
     }
 
-    private function tryLog(string $place, int $action, string $details) : bool
+    private function tryLog(string $place, int $action, string $details): bool
     {
         $model = new self();
         $model->user_id = Yii::$app->user->id;
@@ -141,14 +138,12 @@ class LogsAdmin extends CustomModel
         $model->action = $action;
         $model->details = $details;
 
-        if ($model->validate() && $model->save()){
-            return true;
-        }
+        if ($model->validate() && $model->save()) return true;
 
         return false;
     }
 
-    public static function decodeDetails(string $details) : string
+    public static function decodeDetails(string $details): string
     {
         $details = Json::decode($details);
 
@@ -177,11 +172,9 @@ class LogsAdmin extends CustomModel
         return $result;
     }
 
-    private function sortField(array $ignored, array $attributes) : array
+    private function sortField(array $ignored, array $attributes): array
     {
-        foreach ($ignored as $item) {
-            unset($attributes[$item]);
-        }
+        foreach ($ignored as $item) unset($attributes[$item]);
 
         return $attributes;
     }

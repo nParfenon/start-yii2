@@ -9,13 +9,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-login">
 
     <?php $form = ActiveForm::begin([
-        'id' => 'reset-password-form',
         'action' => '/try-reset-password',
     ]); ?>
 
     <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
-    <?= Yii::$app->session->getFlash('mailer_message') ?>
+    <?= Yii::$app->session->getFlash('reset_password_message') ?>
 
     <?= Html::submitButton('Reset password') ?>
 

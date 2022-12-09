@@ -1,7 +1,8 @@
 <?php
 
-use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 $this->title = 'New password';
 $this->params['breadcrumbs'][] = $this->title;
@@ -9,15 +10,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-login">
 
     <?php $form = ActiveForm::begin([
-        'id' => 'reset-new-password-form',
-        'action' => '/try-reset-new-password?token='.$_GET['token'],
+        'action' => Url::to(['/try-set-new-password', 'token' => $_GET['token']]),
     ]); ?>
 
     <?= $form->field($model, 'password')->passwordInput() ?>
 
     <?= $form->field($model, 'passwordRepeat')->passwordInput() ?>
 
-    <?= Yii::$app->session->getFlash('reset_new_password_message') ?>
+    <?= Yii::$app->session->getFlash('set_new_password_message') ?>
 
     <?= Html::submitButton('Register') ?>
 
