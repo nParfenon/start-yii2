@@ -12,14 +12,14 @@ class m221005_105407_create_logs_admin_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%logs_admin}}', [
-            'id' => $this->primaryKey()->unsigned(),
-            'user_id' => $this->integer()->unsigned()->notNull(),
+        $this->createTable('{{%log_admin}}', [
+            'id' => $this->primaryKey()->notNull()->unsigned(),
+            'user_id' => $this->integer()->unsigned(),
             'place' => $this->string(255)->notNull(),
-            'action' => $this->tinyInteger(1)->unsigned()->notNull(),
-            'details' => $this->text(),
-            'created_at' => $this->dateTime(),
-            'updated_at' => $this->dateTime(),
+            'action' => $this->tinyInteger(1)->notNull()->unsigned(),
+            'details' => $this->text()->notNull(),
+            'created_at' => $this->timestamp(),
+            'updated_at' => $this->timestamp(),
         ]);
     }
 
@@ -28,6 +28,6 @@ class m221005_105407_create_logs_admin_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%logs_admin}}');
+        $this->dropTable('{{%log_admin}}');
     }
 }

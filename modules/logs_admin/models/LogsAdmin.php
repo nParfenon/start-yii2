@@ -39,7 +39,7 @@ class LogsAdmin extends CustomModel
      */
     public static function tableName()
     {
-        return '{{%logs_admin}}';
+        return '{{%log_admin}}';
     }
 
     /**

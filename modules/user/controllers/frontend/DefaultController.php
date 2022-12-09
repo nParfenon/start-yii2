@@ -62,7 +62,7 @@ class DefaultController extends FrontendController
 
     public function actionResetPassword()
     {
-        //$this->checkPage();
+        $this->checkPage();
 
         $model = new ResetPasswordForm();
 
@@ -73,7 +73,7 @@ class DefaultController extends FrontendController
 
     public function actionSetNewPassword($token)
     {
-        //$this->checkPage();
+        $this->checkPage();
 
         if (!$user = User::findByPasswordToken($token)) throw new NotFoundHttpException('Ссылка не действительна или ее время истекло.');
 
