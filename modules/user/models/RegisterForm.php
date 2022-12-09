@@ -22,7 +22,7 @@ class RegisterForm extends Model
 
             ['username', 'match', 'pattern' => '/^[A-Za-z0-9]+$/', 'message' => '{attribute} должен содержать только латиские буквы и цифры'],
             ['username', 'unique', 'targetClass' => User::class, 'message' => 'Такой "{attribute}" уже зарегестрирован'],
-            ['username', 'string', 'length' => [5, 30], 'tooShort' => '{attribute} должен состоять от {min} символов', 'tooLong' => '{attribute} должен состоять до {max} символов включительно'],
+            ['username', 'string', 'length' => [5, 25], 'tooShort' => '{attribute} должен состоять от {min} символов', 'tooLong' => '{attribute} должен состоять до {max} символов включительно'],
 
             ['email', 'trim'],
             ['email', 'email', 'message' => 'Не верно введен "{attribute}"'],

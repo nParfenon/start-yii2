@@ -60,7 +60,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
         $array = [
             [['username', 'email', 'password'], 'required', 'message' => 'Заполните поле'],
             ['newPassword', 'string'],
-            ['username', 'string' ,'max' => 30],
+            ['username', 'string' ,'max' => 25],
             ['email', 'string' ,'max' => 255],
 
             ['username', 'unique', 'targetClass' => self::class, 'message' => 'Такой "{attribute}" уже зарегестрирован'],
@@ -83,7 +83,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
         return [
             [['password', 'passwordRepeat'], 'required', 'message' => 'Заполните поле'],
             ['password', 'match', 'pattern' => '/^(?=.*[0-9])(?=.*[A-Z])([a-zA-Z0-9]+)$/', 'message' => '{attribute} должен содержать латинские заглавные и строчные буквы, цифры'],
-            ['password', 'string', 'length' => [6, 100], 'tooShort' => '{attribute} должен состоять от {min} символов', 'tooLong' => '{attribute} должен состоять до {max} символов включительно'],
+            ['password', 'string', 'length' => [6, 25], 'tooShort' => '{attribute} должен состоять от {min} символов', 'tooLong' => '{attribute} должен состоять до {max} символов включительно'],
             ['passwordRepeat', 'compare', 'compareAttribute' => 'password', 'message' => 'Пароли не совпадают'],
         ];
     }
