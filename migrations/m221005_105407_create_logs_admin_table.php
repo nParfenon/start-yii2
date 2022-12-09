@@ -17,7 +17,7 @@ class m221005_105407_create_logs_admin_table extends Migration
             'user_id' => $this->integer()->unsigned(),
             'place' => $this->string(255)->notNull(),
             'action' => $this->tinyInteger(1)->notNull()->unsigned(),
-            'details' => $this->text()->notNull(),
+            'details' => $this->json()->notNull(),
             'created_at' => $this->timestamp(),
             'updated_at' => $this->timestamp(),
         ]);
