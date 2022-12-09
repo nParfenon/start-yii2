@@ -33,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'id',
                     'username',
                     'email:email',
-                    'phone',
                     'password',
                     'password_reset_token',
                     'authKey',

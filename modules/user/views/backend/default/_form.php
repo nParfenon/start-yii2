@@ -23,8 +23,6 @@ $useRole = ArrayHelper::map($auth->getRolesByUser($model->id),'name','name');*/
 
             <?= $form->field($model, 'email')->textInput() ?>
 
-            <?= $form->field($model, 'phone')->textInput() ?>
-
             <?= $form->field($model, 'password')->textInput(['readonly' => !$model->isNewRecord]) ?>
 
             <?= $form->field($model, 'newPassword')->textInput(['readonly' => $model->isNewRecord]) ?>

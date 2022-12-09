@@ -15,7 +15,7 @@ class FrontendController extends Controller
 
         if (!$page) throw new NotFoundHttpException('Страница не найдена.');
 
-        if ($page->redirect) return $this->redirect($page->redirect);
+        if ($page->redirect) return $this->redirect([$page->redirect]);
 
         $this->view->params['page'] = $page;
 

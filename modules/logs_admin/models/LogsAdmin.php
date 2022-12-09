@@ -21,9 +21,9 @@ use yii\helpers\Json;
 class LogsAdmin extends CustomModel
 {
 
-    const _CREATE = 1;
-    const _UPDATE = 2;
-    const _DELETE = 3;
+    private const _CREATE = 1;
+    private const _UPDATE = 2;
+    private const _DELETE = 3;
 
     const _ACTIONS = [
         self::_CREATE => 'Создание',
