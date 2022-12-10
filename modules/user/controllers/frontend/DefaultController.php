@@ -21,11 +21,11 @@ class DefaultController extends FrontendController
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['login', 'register', 'reset-password', 'reset-new-password', 'logout'],
+                'only' => ['login', 'register', 'reset-password', 'set-new-password', 'logout'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['login', 'register', 'reset-password', 'reset-new-password'],
+                        'actions' => ['login', 'register', 'reset-password', 'set-new-password'],
                         'roles' => ['?'],
                     ],
                     [
@@ -40,7 +40,7 @@ class DefaultController extends FrontendController
 
     public function actionLogin()
     {
-        //$this->checkPage();
+        $this->checkPage();
 
         $model = new LoginForm();
 
@@ -109,7 +109,7 @@ class DefaultController extends FrontendController
 
         }
 
-        throw new NotFoundHttpException(Yii::$app->exceptionMessage->call("404"));
+        throw new NotFoundHttpException();
     }
 
     public function actionTryRegister()
@@ -134,7 +134,7 @@ class DefaultController extends FrontendController
 
         }
 
-        throw new NotFoundHttpException(Yii::$app->exceptionMessage->call("404"));
+        throw new NotFoundHttpException();
     }
 
     public function actionTryResetPassword()
@@ -149,7 +149,7 @@ class DefaultController extends FrontendController
 
                 if ($token) {
 
-                    $mailer = Yii::$app->mailer->compose('user/reset-password', ['token' => $token]);
+                    $mailer = Yii::$app->mailer->compose('user/set-new-password', ['token' => $token]);
                     $mailer->setFrom(Yii::$app->params['senderEmail']);
                     $mailer->setTo($model->email);
 

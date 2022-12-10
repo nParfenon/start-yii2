@@ -16,8 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
-    <?= $form->field($model, 'phone')->textInput(['autofocus' => true]) ?>
-
     <?= $form->field($model, 'password')->passwordInput() ?>
 
     <?= $form->field($model, 'passwordRepeat')->passwordInput() ?>
