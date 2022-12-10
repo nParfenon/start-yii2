@@ -9,11 +9,11 @@ use app\modules\settings\models\Settings;
 
 AppAsset::register($this);
 
-$settings = Settings::getSettings();
+$setting = Settings::getValue(['name' => ['value'], 'description' => ['value']]);
 
 $mainPage = [
-    'title' => $settings['name']['value'],
-    'description' => $settings['description']['value']
+    'title' => $setting['name']['value'],
+    'description' => $setting['description']['value'],
 ];
 
 ?>

@@ -21,7 +21,8 @@
         "dmstr/yii2-adminlte-asset": "^2.1",
         "vlucas/phpdotenv": "^5.4",
         "brussens/yii2-maintenance-mode": "*",
-        "kartik-v/yii2-date-range": "dev-master"
+        "kartik-v/yii2-date-range": "dev-master",
+        "parsecsv/php-parsecsv": "^1.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

@@ -94,7 +94,9 @@ class DefaultController extends Controller
             }
 
         } else {
+
             $model->loadDefaultValues();
+
         }
 
         return $this->render('create', [

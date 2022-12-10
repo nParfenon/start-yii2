@@ -2,35 +2,39 @@
 
 namespace app\modules\settings\controllers\backend;
 
+use Yii;
+use ParseCsv\Csv;
 use yii\web\Controller;
 use app\modules\settings\models\Settings;
+use yii\web\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
 
+    public function actionIndex()
+    {
+        $csv = new Csv();
+        $csv->delimiter = Settings::_DELIMITER;
+        $csv->parseFile(Settings::_PATH . 'setting.csv');
+
+        return $this->render('index', [
+            'data' => $csv->data,
+        ]);
+    }
+
     public function actionUpdate()
     {
-        $model = Settings::getSettings();
+        if (!Yii::$app->request->isPost) throw new NotFoundHttpException();
 
-        if ($this->request->isPost) {
+        $post = $this->request->post('SettingForm');
 
-            $post = $this->request->post();
+        $csv = new Csv();
+        $csv->delimiter = Settings::_DELIMITER;
+        $csv->parseFile(Settings::_PATH . 'setting.csv');
+        $csv->data = array_replace_recursive($csv->data, $post);
+        $csv->save();
 
-            foreach ($post as $item => $value){
-
-                if (array_key_exists($item,$model)){
-
-                    if (Settings::updateAll($value,"field = '$item'")) $model[$item] =  array_merge($model[$item], $post[$item]);
-
-                }
-
-            }
-
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->redirect(['index']);
     }
 
 }

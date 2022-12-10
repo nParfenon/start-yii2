@@ -11,7 +11,7 @@
                         'icon' => 'home',
                         'url' => '#',
                         'items' => [
-                            ['label' => 'Настройки', 'icon' => 'cogs', 'url' => ['/admin/settings/default/update'],],
+                            ['label' => 'Настройки', 'icon' => 'cogs', 'url' => ['/admin/settings/default/index'],],
                             ['label' => 'Логи', 'icon' => 'list-alt', 'url' => ['/admin/logs_admin/default/index'],],
                         ],
                     ],

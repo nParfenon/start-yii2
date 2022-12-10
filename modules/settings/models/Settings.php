@@ -2,19 +2,36 @@
 
 namespace app\modules\settings\models;
 
-use yii\db\ActiveRecord;
+use ParseCsv\Csv;
+use yii\helpers\ArrayHelper;
 
-class Settings extends ActiveRecord
+class Settings
 {
 
-    public static function tableName()
-    {
-        return '{{%settings}}';
-    }
+    const _PATH = '../modules/settings/database/';
+    const _DELIMITER = ';';
 
-    public static function getSettings()
+    /*
+    * ['name' => ['value'],'description' => ['value', 'label']]
+    */
+    public static function getValue(array $field): array
     {
-        return Settings::find()->asArray()->indexBy('field')->all();
-    }
+        $csv = new Csv();
+        $csv->delimiter = self::_DELIMITER;
+        $csv->parseFile(self::_PATH . 'setting.csv');
 
+        $data = $csv->data;
+
+        foreach ($data as $item) {
+
+            if (array_key_exists($item['field'], $field) === true) {
+
+                foreach ($field[$item['field']] as $f) $result[$item['field']][$f] = $item[$f];
+
+            }
+
+        }
+
+        return $result;
+    }
 }
