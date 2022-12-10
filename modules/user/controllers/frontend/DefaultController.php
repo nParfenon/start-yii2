@@ -191,7 +191,7 @@ class DefaultController extends FrontendController
 
                 }
 
-                return $this->goHome();
+                return $this->redirect(['/login']);
             }
 
         }

@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-login">
 
     <?php $form = ActiveForm::begin([
-        'action' => Url::to(['/try-set-new-password', 'token' => $_GET['token']]),
+        'action' => Url::to(['/user/default/try-set-new-password', 'token' => $_GET['token']]),
     ]); ?>
 
     <?= $form->field($model, 'password')->passwordInput() ?>

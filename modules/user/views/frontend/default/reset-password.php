@@ -9,7 +9,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-login">
 
     <?php $form = ActiveForm::begin([
-        'action' => '/try-reset-password',
+        'action' => '/user/default/try-reset-password',
     ]); ?>
 
     <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
