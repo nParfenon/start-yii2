@@ -15,7 +15,7 @@ class DefaultController extends Controller
     {
         $csv = new Csv();
         $csv->delimiter = Settings::_DELIMITER;
-        $csv->parseFile(Settings::_PATH . 'setting.csv');
+        $csv->parseFile(Settings::_PATH . 'settings.csv');
 
         return $this->render('index', [
             'data' => $csv->data,
@@ -30,7 +30,7 @@ class DefaultController extends Controller
 
         $csv = new Csv();
         $csv->delimiter = Settings::_DELIMITER;
-        $csv->parseFile(Settings::_PATH . 'setting.csv');
+        $csv->parseFile(Settings::_PATH . 'settings.csv');
         $csv->data = array_replace_recursive($csv->data, $post);
         $csv->save();
 

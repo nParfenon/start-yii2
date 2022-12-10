@@ -3,7 +3,6 @@
 namespace app\modules\settings\models;
 
 use ParseCsv\Csv;
-use yii\helpers\ArrayHelper;
 
 class Settings
 {
