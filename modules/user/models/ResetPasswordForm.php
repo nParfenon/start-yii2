@@ -10,6 +10,8 @@ class ResetPasswordForm extends Model
 
     public $email;
 
+    private $_user = false;
+
     /**
      * @return array the validation rules.
      */
@@ -19,7 +21,9 @@ class ResetPasswordForm extends Model
             ['email', 'required', 'message' => 'Заполните поле'],
             ['email', 'trim'],
             ['email', 'email', 'message' => 'Не верно введен "{attribute}"'],
-            ['email', 'exist', 'targetClass' => User::class, 'message' => 'Такой "{attribute}" не зарегистрирован']
+            ['email', 'exist', 'targetClass' => User::class, 'message' => 'Такой "{attribute}" не зарегистрирован'],
+
+            ['email', 'validateStatus']
         ];
     }
 
@@ -28,6 +32,17 @@ class ResetPasswordForm extends Model
         return [
             'email' => 'Email',
         ];
+    }
+
+    public function validateStatus($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+
+            $user = $this->getUser();
+
+            if (!$user || !$user->validateStatus()) $this->addError($attribute, 'Пользователь был удален или заблокирован');
+
+        }
     }
 
     public function setPasswordToken()
@@ -45,6 +60,18 @@ class ResetPasswordForm extends Model
         }
 
         return false;
+    }
+
+    /**
+     * Finds user by [[username]]
+     *
+     * @return User|null
+     */
+    public function getUser()
+    {
+        if ($this->_user === false) $this->_user = User::findByEmail($this->email);
+
+        return $this->_user;
     }
 
 }

@@ -27,6 +27,8 @@ $useRole = ArrayHelper::map($auth->getRolesByUser($model->id),'name','name');*/
 
             <?= $form->field($model, 'newPassword')->textInput(['readonly' => $model->isNewRecord]) ?>
 
+            <?= $form->field($model, 'status')->dropDownList($model::_STATUS) ?>
+
             <?= $form->field($model, 'isAdmin')->checkbox() ?>
 
             <?= $form->field($model, 'created_at')->textInput(['disabled' => true]) ?>

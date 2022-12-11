@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use app\modules\user\models\User;
 use app\modules\admin\widgets\buttons;
 
 /* @var $this yii\web\View */
@@ -30,6 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     'username',
                     'email:email',
+                    [
+                        'attribute' => 'status',
+                        'format' => 'text',
+                        'value' => function ($model) {
+                            return Html::encode($model::_STATUS[$model->status]);
+                        },
+                        'filter' => User::_STATUS
+                    ],
                     [
                         'class' => ActionColumn::className(),
                         'buttons' => [

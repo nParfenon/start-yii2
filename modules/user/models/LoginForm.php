@@ -27,12 +27,13 @@ class LoginForm extends Model
     {
         return [
             [['username','password'], 'required','message' => 'Заполните поле'],
-
             ['username', 'match', 'pattern' => '/^[A-Za-z0-9]+$/','message' => 'Логин должен содержать только латиские буквы и цифры'],
 
             ['rememberMe', 'boolean'],
 
             ['password', 'validatePassword'],
+
+            ['username', 'validateStatus']
         ];
     }
 
@@ -64,26 +65,34 @@ class LoginForm extends Model
         }
     }
 
+    public function validateStatus($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+
+            $user = $this->getUser();
+
+            if (!$user || !$user->validateStatus()) $this->addError($attribute, 'Пользователь был удален или заблокирован');
+
+        }
+    }
+
     /**
      * Logs in a user using the provided username and password.
      * @return bool whether the user is logged in successfully
      */
     public function tryLogin()
     {
-        if ($this->validate()) {
+        if (!$this->validate()) return false;
 
-            if ($this->rememberMe) {
+        if ($this->rememberMe) {
 
-                $authKey = $this->getUser();
-                $authKey->generateAuthKey();
-                $authKey->save();
+            $authKey = $this->getUser();
+            $authKey->generateAuthKey();
+            $authKey->save();
 
-            }
-
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
         }
 
-        return false;
+        return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
     }
 
     /**

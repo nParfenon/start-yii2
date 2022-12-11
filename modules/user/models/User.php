@@ -14,17 +14,29 @@ use yii\helpers\ArrayHelper;
  * @property string $email
  * @property string $password
  * @property string|null $password_reset_token
- * @property string|null $authKey
+ * @property int $status
  * @property int|null $isAdmin
+ * @property string|null $authKey
  * @property string|null $created_at
  * @property string|null $updated_at
  */
 class User extends CustomModel implements \yii\web\IdentityInterface
 {
 
+    const _ACTIVE = 1;
+    const _BANNED = 2;
+    const _DELETED = 3;
+
+    const _STATUS = [
+        self::_ACTIVE => 'Активен',
+        self::_BANNED => 'Заблокирован',
+        self::_DELETED => 'Удален'
+    ];
+
     const _SUPER_ADMIN_ID = 1;
     const _SUPER_ADMIN = 'admin';
 
+    private const _TOKEN_LENGHT = 32; /* Длина первой части токена */
     private const _PREFIX = '_it'; /* Разделитель для токена*/
     private const _TIME = 60 * 30; /* Время действия токена*/
 
@@ -69,6 +81,8 @@ class User extends CustomModel implements \yii\web\IdentityInterface
             ['email', 'email', 'message' => 'Не верно введен "{attribute}"'],
             ['email', 'unique', 'targetClass' => self::class, 'targetAttribute' => 'email', 'message' => 'Такой "{attribute}" уже зарегестрирован'],
 
+            ['status', 'integer'],
+
             [['isAdmin'],'boolean'],
         ];
 
@@ -100,8 +114,9 @@ class User extends CustomModel implements \yii\web\IdentityInterface
             'role' => 'Роль',
             'password' => 'Пароль',
             'password_reset_token' => 'Токен сброса пароля',
-            'authKey' => 'Ключ аутентификации',
+            'status' => 'Статус',
             'isAdmin' => 'Админ',
+            'authKey' => 'Ключ аутентификации',
             'newPassword' => 'Новый пароль'
         ] ;
 
@@ -113,9 +128,13 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      */
     public function beforeSave($insert)
     {
-        if ($this->id === self::_SUPER_ADMIN_ID || $this->username === self::_SUPER_ADMIN){
+        if ($this->id === self::_SUPER_ADMIN_ID || $this->username === self::_SUPER_ADMIN) {
 
-            if ($this->username !== self::_SUPER_ADMIN || $this->isAdmin == false) return false;
+            if ($this->username !== self::_SUPER_ADMIN) return false;
+
+            if ($this->isAdmin == false) return false;
+
+            if ($this->status != self::_ACTIVE) return false;
 
         }
 
@@ -179,6 +198,14 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     }
 
     /**
+     * Проверка на активного пользователя
+     */
+    public function validateStatus()
+    {
+        return $this->status === self::_ACTIVE;
+    }
+
+    /**
      * Генерирует авторизационный ключ
      */
     public function generateAuthKey()
@@ -210,7 +237,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return  Yii::$app->security->validatePassword($password,$this->password);
+        return Yii::$app->security->validatePassword($password,$this->password);
     }
 
     /**
@@ -226,7 +253,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      */
     public static function generatePasswordToken(int $id): string
     {
-        return Yii::$app->security->generateRandomString() . self::_PREFIX . $id . self::_PREFIX  . time() + self::_TIME;
+        return Yii::$app->security->generateRandomString(self::_TOKEN_LENGHT) . $id . self::_PREFIX  . time() + self::_TIME;
     }
 
     /**
@@ -234,9 +261,9 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      */
     public static function findByPasswordToken(string $token)
     {
-        $exp = explode(self::_PREFIX, $token);
+        $exp = explode(self::_PREFIX, substr($token, self::_TOKEN_LENGHT));
 
-        if (count($exp) != 3) return false;
+        if (count($exp) != 2) return false;
 
         $time = array_pop($exp);
         $id = array_pop($exp);
@@ -249,6 +276,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
             $user->save();
 
             return false;
+
         }
 
         return $user;

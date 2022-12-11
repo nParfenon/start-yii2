@@ -5,7 +5,7 @@ namespace app\modules\settings\controllers\backend;
 use Yii;
 use ParseCsv\Csv;
 use yii\web\Controller;
-use app\modules\settings\models\Settings;
+use app\modules\settings\Settings;
 use yii\web\NotFoundHttpException;
 
 class DefaultController extends Controller
@@ -15,7 +15,7 @@ class DefaultController extends Controller
     {
         $csv = new Csv();
         $csv->delimiter = Settings::_DELIMITER;
-        $csv->parseFile(Settings::_PATH . 'settings.csv');
+        $csv->parseFile(Settings::_PATH . Settings::_FILE);
 
         return $this->render('index', [
             'data' => $csv->data,
@@ -30,7 +30,7 @@ class DefaultController extends Controller
 
         $csv = new Csv();
         $csv->delimiter = Settings::_DELIMITER;
-        $csv->parseFile(Settings::_PATH . 'settings.csv');
+        $csv->parseFile(Settings::_PATH . Settings::_FILE);
         $csv->data = array_replace_recursive($csv->data, $post);
         $csv->save();
 

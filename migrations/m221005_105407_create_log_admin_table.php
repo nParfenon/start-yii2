@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%logs_admin}}`.
+ * Handles the creation of table `{{%log_admin}}`.
  */
-class m221005_105407_create_logs_admin_table extends Migration
+class m221005_105407_create_log_admin_table extends Migration
 {
     /**
      * {@inheritdoc}

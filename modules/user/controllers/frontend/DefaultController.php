@@ -99,7 +99,7 @@ class DefaultController extends FrontendController
 
         if ($model->load(Yii::$app->request->post())) {
 
-            if($model->tryLogin()) return $this->goHome();
+            if($login = $model->tryLogin()) return $this->goHome();
 
             Yii::$app->session->setFlash('login_message', implode($model->firstErrors));
 

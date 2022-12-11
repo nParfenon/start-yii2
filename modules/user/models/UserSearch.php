@@ -17,6 +17,7 @@ class UserSearch extends User
     {
         return [
             [['username', 'email'], 'string'],
+            ['status', 'integer']
         ];
     }
 
@@ -59,7 +60,8 @@ class UserSearch extends User
 
         // grid filtering conditions
         $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'email', $this->email]);
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['status' => $this->status]);
 
         return $dataProvider;
     }

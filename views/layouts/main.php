@@ -5,15 +5,13 @@
 
 use app\assets\AppAsset;
 use yii\bootstrap4\Html;
-use app\modules\settings\models\Settings;
+use app\modules\settings\Settings;
 
 AppAsset::register($this);
 
-$setting = Settings::getValue(['name' => ['value'], 'description' => ['value']]);
-
 $mainPage = [
-    'title' => $setting['name']['value'],
-    'description' => $setting['description']['value'],
+    'title' => Settings::getValue('name'),
+    'description' => Settings::getValue('description')
 ];
 
 ?>
@@ -24,13 +22,20 @@ $mainPage = [
 <html lang="<?= Yii::$app->language ?>" class="h-100">
 
 <head>
+
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <?php $this->registerCsrfMetaTags() ?>
+
     <title><?= Html::encode($mainPage['title']) ?></title>
+
     <meta name="description" content="<?= Html::encode($mainPage['description']) ?>">
+
     <?= $this->render('@app/views/partial/open_graph', ['mainPage' => $mainPage,]); ?>
+
     <?php $this->head() ?>
+
 </head>
 
 <body class="d-flex flex-column h-100">

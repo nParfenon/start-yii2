@@ -9,8 +9,9 @@ if (isset($this->params['page'])){
 
     $page = $this->params['page'];
 
-    $title .= " - ".$page->meta_title;
-    $description .= " - ".$page->meta_description;
+    if ($page->meta_title) $title .= " - ".$page->meta_title;
+
+    if ($page->meta_description) $description .= " - ".$page->meta_description;
 
 }
 
