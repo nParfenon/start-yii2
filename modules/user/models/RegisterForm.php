@@ -45,16 +45,14 @@ class RegisterForm extends Model
 
     public function tryRegister()
     {
-        if ($this->validate()) {
+        if (!$this->validate()) return false;
 
-            $user = new User();
-            $user->username = $this->username;
-            $user->email = $this->email;
-            $user->password = $user->setPassword($this->password);
+        $user = new User();
+        $user->username = $this->username;
+        $user->email = $this->email;
+        $user->password = $user->setPassword($this->password);
 
-            if ($user->save()) return $user;
-
-        }
+        if ($user->save()) return $user;
 
         return false;
     }
