@@ -37,5 +37,6 @@ tests/_support/_generated
 
 # web folder
 /web/log/
+/web/captcha/
 
 .env
