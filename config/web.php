@@ -64,6 +64,10 @@ $config = [
             'showScriptName' => false,
             'rules' => $routes,
         ],
+
+        'captcha' => [
+            'class' => 'app\components\captcha\Captcha',
+        ]
     ],
     'modules' => $modules,
     'params' => $params,

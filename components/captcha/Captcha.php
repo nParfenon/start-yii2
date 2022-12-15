@@ -5,6 +5,21 @@ namespace app\components\captcha;
 class Captcha
 {
 
+    /*
+    *     'components' => [
+    *         'captcha' => [
+    *             'class' => 'yii\swiftmailer\Mailer',
+    *             'background_color' => [0, 0, 0],
+    *             'length' => 6,
+    *             'string' => 'AaBbC0cDdEe1FfGgH2hIiJj3KkLlM4mNnOo5PpQqR6rSsTt7UuVvW8wXxYy9Zz',
+    *             'size' => 18,
+    *             'angle' => [-25, 25],
+    *             'text_color' =>  [255, 255, 255]
+    *             'line' => 6
+    *         ],
+    *     ],
+    */
+
     private const _UPLOADS = 'captcha';
 
     private const _WIDTH = 170;
@@ -13,58 +28,22 @@ class Captcha
     private const _FONT = '../components/captcha/src/fonts/ds_moster.ttf';
 
     private $image;
-
-    private $background_color;
-
-    private $length = 6;
-    private $string = 'AaBbC0cDdEe1FfGgH2hIiJj3KkLlM4mNnOo5PpQqR6rSsTt7UuVvW8wXxYy9Zz';
-    private $size = 18;
-    private $angle = [-25, 25];
-    private $text_color;
-
-    private $line = 6;
-
     private $name_image;
     private $answer;
+
+    public $background_color;
+
+    public $length = 6;
+    public $string = 'AaBbC0cDdEe1FfGgH2hIiJj3KkLlM4mNnOo5PpQqR6rSsTt7UuVvW8wXxYy9Zz';
+    public $size = 18;
+    public $angle = [-25, 25];
+    public $text_color;
+
+    public $line = 6;
 
     public function __construct()
     {
         if (!file_exists(self::_UPLOADS)) mkdir(self::_UPLOADS);
-    }
-
-    public function setBackgroundColor(array $rgb)
-    {
-        $this->background_color = $rgb;
-    }
-
-    public function setTextColor(array $rgb)
-    {
-        $this->text_color = $rgb;
-    }
-
-    public function setLength(int $length)
-    {
-        $this->length = $length;
-    }
-
-    public function setString(string $string)
-    {
-        if ($string) $this->string = $string;
-    }
-
-    public function setSize(float $size)
-    {
-        $this->size = $size;
-    }
-
-    public function setAngle(array $angle)
-    {
-        $this->angle = $angle;
-    }
-
-    public function setLine(int $line)
-    {
-        $this->line = $line;
     }
 
     public function getNameImage()
