@@ -163,7 +163,7 @@ class Captcha
 
     private function saveImage()
     {
-        imagepng($this->image, self::_UPLOADS .'/' . $this->name_image);
+        imagepng($this->image, self::_UPLOADS . '/' . $this->name_image);
     }
 
     private function destroyImage()
