@@ -5,7 +5,7 @@ namespace app\components\captcha;
 class Captcha
 {
 
-    private const _UPLOADS = 'captha';
+    private const _UPLOADS = 'captcha';
 
     private const _WIDTH = 170;
     private const _HEIGHT = 70;
@@ -16,16 +16,21 @@ class Captcha
 
     private $background_color;
 
-    private $length = 7;
+    private $length = 6;
     private $string = 'AaBbC0cDdEe1FfGgH2hIiJj3KkLlM4mNnOo5PpQqR6rSsTt7UuVvW8wXxYy9Zz';
     private $size = 18;
     private $angle = [-25, 25];
     private $text_color;
 
-    private $line = 10;
+    private $line = 6;
 
     private $name_image;
     private $answer;
+
+    public function __construct()
+    {
+        if (!file_exists(self::_UPLOADS)) mkdir(self::_UPLOADS);
+    }
 
     public function setBackgroundColor(array $rgb)
     {
@@ -64,7 +69,7 @@ class Captcha
 
     public function getNameImage()
     {
-        return $this->name_image;
+        return self::_UPLOADS . '/' . $this->name_image;
     }
 
     public function getAnswer()
