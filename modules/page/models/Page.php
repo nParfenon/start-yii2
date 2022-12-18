@@ -24,6 +24,8 @@ class Page extends CustomModel
     const MAIN_PAGE_ID = 1;
     const MAIN_PAGE = '/';
 
+    public static $page;
+
     /**
      * {@inheritdoc}
      */
@@ -101,7 +103,9 @@ class Page extends CustomModel
 
     public static function getPage()
     {
-        return Page::find()->where(['urn' => strtok($_SERVER['REQUEST_URI'],'?'), 'active' => true])->one();
+        self::$page = Page::find()->where(['urn' => strtok($_SERVER['REQUEST_URI'],'?'), 'active' => true])->one();
+
+        return self::$page;
     }
 
 }

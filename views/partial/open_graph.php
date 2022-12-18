@@ -1,13 +1,12 @@
 <?php
 
-Use yii\helpers\Html;
+use yii\helpers\Html;
+use app\modules\page\models\Page;
 
 $title = $mainPage['title'];
 $description = $mainPage['description'];
 
-if (isset($this->params['page'])){
-
-    $page = $this->params['page'];
+if ($page = Page::$page){
 
     if ($page->meta_title) $title .= " - ".$page->meta_title;
 
