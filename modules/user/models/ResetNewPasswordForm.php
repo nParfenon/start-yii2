@@ -2,7 +2,6 @@
 
 namespace app\modules\user\models;
 
-use Yii;
 use yii\base\Model;
 
 class ResetNewPasswordForm extends Model
@@ -11,12 +10,12 @@ class ResetNewPasswordForm extends Model
     public $password;
     public $passwordRepeat;
 
-    public function rules()
+    public function rules(): array
     {
         return User::rulesPassword();
     }
 
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'password' => 'Новый пароль',

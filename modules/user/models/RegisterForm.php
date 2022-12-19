@@ -15,7 +15,7 @@ class RegisterForm extends Model
 
     private $_user = false;
 
-    public function rules()
+    public function rules(): array
     {
         $array = [
             [['username', 'email'], 'required', 'message' => 'Заполните поле'],
@@ -33,7 +33,7 @@ class RegisterForm extends Model
         return array_merge(User::rulesPassword(), $array);
     }
 
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'username' => 'Логин',
@@ -43,7 +43,7 @@ class RegisterForm extends Model
         ];
     }
 
-    public function tryRegister()
+    public function tryRegister(): User|bool
     {
         if (!$this->validate()) return false;
 

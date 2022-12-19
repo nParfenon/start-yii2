@@ -2,7 +2,6 @@
 
 namespace app\modules\user\models;
 
-use Yii;
 use yii\base\Model;
 
 class ResetPasswordForm extends Model
@@ -15,7 +14,7 @@ class ResetPasswordForm extends Model
     /**
      * @return array the validation rules.
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             ['email', 'required', 'message' => 'Заполните поле'],
@@ -27,14 +26,14 @@ class ResetPasswordForm extends Model
         ];
     }
 
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'email' => 'Email',
         ];
     }
 
-    public function validateStatus($attribute, $params)
+    public function validateStatus(string $attribute, array|null $params)
     {
         if (!$this->hasErrors()) {
 
@@ -45,7 +44,7 @@ class ResetPasswordForm extends Model
         }
     }
 
-    public function setPasswordToken()
+    public function setPasswordToken(): bool|string
     {
         if ($this->validate()) {
 
@@ -67,7 +66,7 @@ class ResetPasswordForm extends Model
      *
      * @return User|null
      */
-    public function getUser()
+    public function getUser(): User|null
     {
         if ($this->_user === false) $this->_user = User::findByEmail($this->email);
 

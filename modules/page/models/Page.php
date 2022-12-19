@@ -29,7 +29,7 @@ class Page extends CustomModel
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%page}}';
     }
@@ -37,7 +37,7 @@ class Page extends CustomModel
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         $array = [
             [['name','urn'],'required'],
@@ -61,7 +61,7 @@ class Page extends CustomModel
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         $array = [
             'id' => 'ID',
@@ -80,7 +80,7 @@ class Page extends CustomModel
     /**
      * {@inheritdoc}
      */
-    public function beforeSave($insert)
+    public function beforeSave($insert): bool
     {
         if ($this->id === self::MAIN_PAGE_ID || $this->urn === self::MAIN_PAGE) {
 
@@ -94,14 +94,14 @@ class Page extends CustomModel
     /**
      * {@inheritdoc}
      */
-    public function beforeDelete()
+    public function beforeDelete(): bool
     {
         if ($this->id === self::MAIN_PAGE_ID || $this->urn === self::MAIN_PAGE) return false;
 
         return parent::beforeDelete();
     }
 
-    public static function getPage()
+    public static function getPage(): array|\yii\db\ActiveRecord|null
     {
         self::$page = Page::find()->where(['urn' => strtok($_SERVER['REQUEST_URI'],'?'), 'active' => true])->one();
 

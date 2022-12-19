@@ -2,9 +2,7 @@
 
 namespace app\modules\user\controllers\backend;
 
-use app\modules\logs_admin\models\LogsAdmin;
 use yii\web\Controller;
-use app\controllers\CustomController;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use app\modules\user\models\User;
@@ -18,7 +16,7 @@ class DefaultController extends Controller
     /**
      * @inheritDoc
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return array_merge(
             parent::behaviors(),
@@ -43,7 +41,7 @@ class DefaultController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new UserSearch();
 
@@ -61,7 +59,7 @@ class DefaultController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(int $id): string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -73,7 +71,7 @@ class DefaultController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate(): \yii\web\Response|string
     {
         $model = new User();
 
@@ -111,7 +109,7 @@ class DefaultController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id): \yii\web\Response|string
     {
         $model = $this->findModel($id);
 
@@ -141,7 +139,7 @@ class DefaultController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id): \yii\web\Response
     {
         $model = $this->findModel($id);
 
@@ -159,7 +157,7 @@ class DefaultController extends Controller
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel(int $id): User
     {
         if (($model = User::findOne(['id' => $id])) !== null) return $model;
 

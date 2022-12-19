@@ -20,6 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'passwordRepeat')->passwordInput() ?>
 
+    <?= Yii::$app->session->getFlash('register_message') ?>
+
     <?= Html::submitButton('Register') ?>
 
     <?php ActiveForm::end(); ?>

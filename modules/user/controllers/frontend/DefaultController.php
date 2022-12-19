@@ -5,7 +5,6 @@ namespace app\modules\user\controllers\frontend;
 use Yii;
 use app\controllers\FrontendController;
 use yii\filters\AccessControl;
-use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use app\modules\user\models\User;
 use app\modules\user\models\LoginForm;
@@ -16,7 +15,7 @@ use app\modules\user\models\ResetNewPasswordForm;
 class DefaultController extends FrontendController
 {
 
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'access' => [
@@ -38,7 +37,10 @@ class DefaultController extends FrontendController
         ];
     }
 
-    public function actionLogin()
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionLogin(): string
     {
         $this->checkPage();
 
@@ -49,7 +51,10 @@ class DefaultController extends FrontendController
         ]);
     }
 
-    public function actionRegister()
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionRegister(): string
     {
         $this->checkPage();
 
@@ -60,7 +65,10 @@ class DefaultController extends FrontendController
         ]);
     }
 
-    public function actionResetPassword()
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionResetPassword(): string
     {
         $this->checkPage();
 
@@ -71,7 +79,10 @@ class DefaultController extends FrontendController
         ]);
     }
 
-    public function actionSetNewPassword($token)
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionSetNewPassword($token): string
     {
         $this->checkPage();
 
@@ -84,14 +95,17 @@ class DefaultController extends FrontendController
         ]);
     }
 
-    public function actionLogout()
+    public function actionLogout(): \yii\web\Response
     {
         Yii::$app->user->logout();
 
         return $this->goHome();
     }
 
-    public function actionTryLogin()
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionTryLogin(): \yii\web\Response
     {
         if (!Yii::$app->request->isPost) throw new NotFoundHttpException();
 
@@ -99,17 +113,21 @@ class DefaultController extends FrontendController
 
         if ($model->load(Yii::$app->request->post())) {
 
-            if($login = $model->tryLogin()) return $this->goHome();
+            if ($login = $model->tryLogin()) return $this->goHome();
 
-            Yii::$app->session->setFlash('login_message', implode($model->firstErrors));
-
-            return $this->redirect(['/login']);
+            $message = implode($model->firstErrors);
 
         }
 
+        Yii::$app->session->setFlash('login_message', $message ?? 'Ошибка входа. Попробуйте позже');
+
+        return $this->redirect(['/login']);
     }
 
-    public function actionTryRegister()
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionTryRegister(): \yii\web\Response
     {
         if (!Yii::$app->request->isPost) throw new NotFoundHttpException();
 
@@ -129,9 +147,15 @@ class DefaultController extends FrontendController
 
         }
 
+        Yii::$app->session->setFlash('register_message', 'Ошибка Регистрации. Попробуйте позже');
+
+        return $this->redirect(['/register']);
     }
 
-    public function actionTryResetPassword()
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionTryResetPassword(): \yii\web\Response
     {
         if (!Yii::$app->request->isPost) throw new NotFoundHttpException();
 
@@ -157,13 +181,16 @@ class DefaultController extends FrontendController
 
             }
 
-            Yii::$app->session->setFlash('reset_password_message', $message);
-
-            return $this->redirect(['/reset-password']);
         }
 
+        Yii::$app->session->setFlash('reset_password_message', $message ?? 'Ошибка. попробуйте позже');
+
+        return $this->redirect(['/reset-password']);
     }
 
+    /**
+     * @throws NotFoundHttpException
+     */
     public function actionTrySetNewPassword($token)
     {
         if (!Yii::$app->request->isPost) throw new NotFoundHttpException();
@@ -182,9 +209,6 @@ class DefaultController extends FrontendController
 
             }
 
-            return $this->redirect(['/login']);
         }
-
     }
-
 }

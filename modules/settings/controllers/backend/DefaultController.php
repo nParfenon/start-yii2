@@ -11,7 +11,7 @@ use yii\web\NotFoundHttpException;
 class DefaultController extends Controller
 {
 
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $csv = new Csv();
         $csv->delimiter = Settings::_DELIMITER;
@@ -22,7 +22,10 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function actionUpdate()
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionUpdate(): \yii\web\Response
     {
         if (!Yii::$app->request->isPost) throw new NotFoundHttpException();
 

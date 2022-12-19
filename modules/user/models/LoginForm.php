@@ -4,6 +4,7 @@ namespace app\modules\user\models;
 
 use Yii;
 use yii\base\Model;
+use app\models\CustomForm;
 
 /**
  * LoginForm is the model behind the login form.
@@ -23,28 +24,34 @@ class LoginForm extends Model
     /**
      * @return array the validation rules.
      */
-    public function rules()
+    public function rules(): array
     {
-        return [
-            [['username','password'], 'required','message' => 'Заполните поле'],
+        $array = [
+            [['username','password'], 'required','message' => 'Заполните поле {attribute}'],
+
             ['username', 'match', 'pattern' => '/^[A-Za-z0-9]+$/','message' => 'Логин должен содержать только латиские буквы и цифры'],
 
             ['rememberMe', 'boolean'],
 
             ['password', 'validatePassword'],
 
-            ['username', 'validateStatus']
+            ['username', 'validateStatus'],
+
         ];
+
+        return array_merge(parent::rules(), $array);
     }
 
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
-        return [
+        $array = [
             'username' => 'Логин',
             'password'=>'Пароль',
             'rememberMe' => 'Запомнить',
             'message'=>'Сообщение',
         ];
+
+        return array_merge(parent::attributeLabels(), $array);
     }
 
     /**
@@ -52,9 +59,9 @@ class LoginForm extends Model
      * This method serves as the inline validation for password.
      *
      * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
+     * @param array|null $params the additional name-value pairs given in the rule
      */
-    public function validatePassword($attribute, $params)
+    public function validatePassword(string $attribute, array|null $params)
     {
         if (!$this->hasErrors()) {
 
@@ -65,7 +72,7 @@ class LoginForm extends Model
         }
     }
 
-    public function validateStatus($attribute, $params)
+    public function validateStatus(string $attribute, array|null $params)
     {
         if (!$this->hasErrors()) {
 
@@ -80,7 +87,7 @@ class LoginForm extends Model
      * Logs in a user using the provided username and password.
      * @return bool whether the user is logged in successfully
      */
-    public function tryLogin()
+    public function tryLogin(): bool
     {
         if (!$this->validate()) return false;
 
@@ -100,7 +107,7 @@ class LoginForm extends Model
      *
      * @return User|null
      */
-    public function getUser()
+    public function getUser(): User|null
     {
         if ($this->_user === false) $this->_user = User::findByUsername($this->username);
 

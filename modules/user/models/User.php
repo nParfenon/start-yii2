@@ -4,6 +4,7 @@ namespace app\modules\user\models;
 
 use Yii;
 use app\models\CustomModel;
+use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -58,7 +59,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%user}}';
     }
@@ -67,7 +68,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      * Данные правила участвуют только при добавлении через админку
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         $array = [
             [['username', 'email', 'password'], 'required', 'message' => 'Заполните поле'],
@@ -92,7 +93,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     /**
      * Правила для регистрации пользователей и при смены пароля в случае, если человек его забыл
      */
-    public static function rulesPassword()
+    public static function rulesPassword(): array
     {
         return [
             [['password', 'passwordRepeat'], 'required', 'message' => 'Заполните поле'],
@@ -105,7 +106,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         $array = [
             'id' => 'ID',
@@ -126,7 +127,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function beforeSave($insert)
+    public function beforeSave($insert): bool
     {
         if ($this->id === self::_SUPER_ADMIN_ID || $this->username === self::_SUPER_ADMIN) {
 
@@ -144,7 +145,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function beforeDelete()
+    public function beforeDelete(): bool
     {
         if ($this->id === self::_SUPER_ADMIN_ID || $this->username === self::_SUPER_ADMIN) return false;
 
@@ -173,7 +174,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername($username)
+    public static function findByUsername(string $username)
     {
         return static::findOne(['username' => $username]);
     }
@@ -184,7 +185,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      * @param string $email
      * @return static|null
      */
-    public static function findByEmail($email)
+    public static function findByEmail(string $email)
     {
         return static::findOne(['email' => $email]);
     }
@@ -192,7 +193,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int|string
     {
         return $this->id;
     }
@@ -200,13 +201,14 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     /**
      * Проверка на активного пользователя
      */
-    public function validateStatus()
+    public function validateStatus(): bool
     {
         return $this->status === self::_ACTIVE;
     }
 
     /**
      * Генерирует авторизационный ключ
+     * @throws Exception
      */
     public function generateAuthKey()
     {
@@ -216,7 +218,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getAuthKey()
+    public function getAuthKey(): string|null
     {
         return $this->authKey;
     }
@@ -224,7 +226,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function validateAuthKey($authKey)
+    public function validateAuthKey($authKey): bool|null
     {
         return $this->authKey === $authKey;
     }
@@ -235,7 +237,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
-    public function validatePassword($password)
+    public function validatePassword(string $password): bool
     {
         return Yii::$app->security->validatePassword($password,$this->password);
     }
@@ -243,7 +245,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     /**
      * Генерирует пароль
      */
-    public function setPassword($password)
+    public function setPassword(string $password): string
     {
         return Yii::$app->security->generatePasswordHash($password);
     }

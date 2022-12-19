@@ -4,7 +4,6 @@ namespace app\modules\page\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\page\models\Page;
 
 /**
  * PageSearch represents the model behind the search form of `app\modules\page\models\Page'.
@@ -14,7 +13,7 @@ class PageSearch extends Page
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name', 'urn'], 'string'],
@@ -25,7 +24,7 @@ class PageSearch extends Page
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
@@ -38,7 +37,7 @@ class PageSearch extends Page
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params): ActiveDataProvider
     {
         $query = Page::find();
 

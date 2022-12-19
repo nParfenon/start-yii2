@@ -1,5 +1,6 @@
 <?php
 
+use yii\captcha\Captcha;
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 
