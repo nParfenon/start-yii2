@@ -37,7 +37,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
     const _SUPER_ADMIN_ID = 1;
     const _SUPER_ADMIN = 'admin';
 
-    private const _TOKEN_LENGHT = 32; /* Длина первой части токена */
+    private const _TOKEN_LENGTH = 32; /* Длина первой части токена */
     private const _PREFIX = '_it'; /* Разделитель для токена*/
     private const _TIME = 60 * 30; /* Время действия токена*/
 
@@ -255,7 +255,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      */
     public static function generatePasswordToken(int $id): string
     {
-        return Yii::$app->security->generateRandomString(self::_TOKEN_LENGHT) . $id . self::_PREFIX  . time() + self::_TIME;
+        return Yii::$app->security->generateRandomString(self::_TOKEN_LENGTH) . $id . self::_PREFIX  . time() + self::_TIME;
     }
 
     /**
@@ -263,7 +263,7 @@ class User extends CustomModel implements \yii\web\IdentityInterface
      */
     public static function findByPasswordToken(string $token)
     {
-        $exp = explode(self::_PREFIX, substr($token, self::_TOKEN_LENGHT));
+        $exp = explode(self::_PREFIX, substr($token, self::_TOKEN_LENGTH));
 
         if (count($exp) != 2) return false;
 
